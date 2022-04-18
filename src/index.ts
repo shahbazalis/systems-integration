@@ -1,4 +1,11 @@
+import express from "express";
 
+const app = express();
 
-console.log("Hello from Typescript Project");
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
 
+app.listen(5000, () => {
+  console.log("Started");
+});

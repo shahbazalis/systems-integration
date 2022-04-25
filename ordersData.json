@@ -1,1 +1,1 @@
-{"bda73cd4-30a0-40e5-bd0b-2bc3c907be47":{"type":["from"],"fromLocation":"Porvoo","toLocation":"","cargoType":"","cargoAmount":""}}
+{"bda73cd4-30a0-40e5-bd0b-2bc3c907be48":{"extOrderId":"bda73cd4-30a0-40e5-bd0b-2bc3c907be48","type":["from","to","cargo"],"fromLocation":"Porvoo","toLocation":"Kokkola","cargoType":"Pasta","cargoAmount":100},"bda73cd4-30a0-40e5-bd0b-2bc3c907be47":{"extOrderId":"bda73cd4-30a0-40e5-bd0b-2bc3c907be47","type":["from","to","cargo"],"fromLocation":"Porvoo","toLocation":"Kokkola","cargoType":"Pasta","cargoAmount":100}}

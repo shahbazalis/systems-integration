@@ -1,4 +1,5 @@
 interface OrderObj {
+  extOrderId: string;
   type: string[];
   fromLocation?: string;
   toLocation?: string;

@@ -7,7 +7,7 @@ import { ModifiedOrderObject } from "../interfaces/ModifiedOrderObject";
 const JSON_FILE_NAME = "../../ordersData.json";
 const JSON_SYSTEM_FILE = "../../systemData.json";
 
- const jsonFileOperationsObj = {
+const jsonFileOperationsObj = {
   readIntegrationJsonFile: async () => {
     try {
       const orders = await fs.readFileSync(
@@ -39,6 +39,7 @@ const JSON_SYSTEM_FILE = "../../systemData.json";
       if (!orderDetail) {
         const orderDataObj: ModifiedOrderObject = {};
         orderDataObj[orders.extOrderId] = {
+          extOrderId: orders.extOrderId,
           type: [orders.type],
           fromLocation: orders.fromLocation ? orders.fromLocation : "",
           toLocation: orders.toLocation ? orders.toLocation : "",
@@ -46,28 +47,46 @@ const JSON_SYSTEM_FILE = "../../systemData.json";
           cargoAmount: orders.cargoAmount ? orders.cargoAmount : "",
         };
         await jsonFileOperationsObj.writeJsonFile(orderDataObj);
-        return orderDataObj;
+        return orderDataObj[orders.extOrderId];
       } else {
         const orderDataObj = JSON.parse(orderDetail);
         const keys = Object.keys(orderDataObj);
-        if (keys[0] === orders.extOrderId) {
-          orderDataObj[keys[0]].type.push(orders.type);
+        if (
+          keys.includes(orders.extOrderId) &&
+          !orderDataObj[orders.extOrderId].type.includes(orders.type)
+        ) {
+          if (!orderDataObj[orders.extOrderId].type.includes(orders.type)) {
+            orderDataObj[orders.extOrderId].type.push(orders.type);
+          }
+          orders.extOrderId
+            ? (orderDataObj[orders.extOrderId].extOrderId = orders.extOrderId)
+            : orderDataObj[orders.extOrderId].extOrderId;
           orders.fromLocation
-            ? (orderDataObj[keys[0]].fromLocation = orders.fromLocation)
-            : orderDataObj[keys[0]].fromLocation;
+            ? (orderDataObj[orders.extOrderId].fromLocation =
+                orders.fromLocation)
+            : orderDataObj[orders.extOrderId].fromLocation;
           orders.toLocation
-            ? (orderDataObj[keys[0]].toLocation = orders.toLocation)
-            : orderDataObj[keys[0]].toLocation;
+            ? (orderDataObj[orders.extOrderId].toLocation = orders.toLocation)
+            : orderDataObj[orders.extOrderId].toLocation;
           orders.cargoType
-            ? (orderDataObj[keys[0]].cargoType = orders.cargoType)
-            : orderDataObj[keys[0]].cargoType;
+            ? (orderDataObj[orders.extOrderId].cargoType = orders.cargoType)
+            : orderDataObj[orders.extOrderId].cargoType;
           orders.cargoAmount
-            ? (orderDataObj[keys[0]].cargoAmount = orders.cargoAmount)
-            : orderDataObj[keys[0]].cargoAmount;
-
-          await jsonFileOperationsObj.writeJsonFile(orderDataObj);
-          return orderDataObj;
+            ? (orderDataObj[orders.extOrderId].cargoAmount = orders.cargoAmount)
+            : orderDataObj[orders.extOrderId].cargoAmount;
+        } else if (!keys.includes(orders.extOrderId)) {
+          orderDataObj[orders.extOrderId] = {
+            extOrderId: orders.extOrderId,
+            type: [orders.type],
+            fromLocation: orders.fromLocation ? orders.fromLocation : "",
+            toLocation: orders.toLocation ? orders.toLocation : "",
+            cargoType: orders.cargoType ? orders.cargoType : "",
+            cargoAmount: orders.cargoAmount ? orders.cargoAmount : "",
+          };
         }
+
+        await jsonFileOperationsObj.writeJsonFile(orderDataObj);
+        return orderDataObj[orders.extOrderId];
       }
     } catch (e) {
       console.log("error writing to json file", e);

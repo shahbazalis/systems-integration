@@ -1,13 +1,17 @@
 import app from "../index";
 import request from "supertest";
-import {
-  jsonFileOperationsObj
-} from "../controllers/jsonFileOperations";
+import 
+jsonFileOperationsObj 
+ from "../controllers/jsonFileOperations";
 
-jest.mock("../controllers/jsonFileOperations", () => ({
-    writeCompanySystemJsonFile: jest.fn(),
-    wwriteIntegrationJsonFile: jest.fn()
-}));
+const bc ={aa:jsonFileOperationsObj.writeCompanySystemJsonFile};
+jest.mock("../controllers/jsonFileOperations");
+
+
+// jest.mock("../controllers/jsonFileOperations", () => ({
+//   // bc["aa"]: jest.fn(),
+//     wwriteIntegrationJsonFile: jest.fn()
+// }));
 
 
 describe("APIs endpoint", () => {
@@ -27,7 +31,10 @@ describe("APIs endpoint", () => {
           "cargoAmount": 100,
         },
       }];
-      writeCompanySystemJsonFile.mockImplementation(() => mockedOrderJson);
+      const functionNameMock = jest.fn();
+      jest.spyOn(jsonFileOperationsObj, "writeCompanySystemJsonFile").mockImplementation(functionNameMock);
+     
+      //writeCompanySystemJsonFile.mockImplementation(() => mockedOrderJson);
     const result = await request(app).post("/orders/system").send(mockedOrderJson);
     expect(result.statusCode).toEqual(200);
   });

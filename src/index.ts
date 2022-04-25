@@ -14,7 +14,7 @@ app.get("/", (req: Request, res: Response) => {
 app.use("/orders", ordersRoutes);
 
 app.listen(PORT, () => {
-  console.log("Started");
+  //console.log("Started");
 });
 
 export default app;

@@ -1,4 +1,4 @@
-import { jsonFileOperationsObj } from "../controllers/jsonFileOperations";
+import  jsonFileOperationsObj  from "../controllers/jsonFileOperations";
 
 describe("JSON file operations", () => {
   test("read json op file", async () => {

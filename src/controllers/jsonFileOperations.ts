@@ -7,7 +7,7 @@ import { ModifiedOrderObject } from "../interfaces/ModifiedOrderObject";
 const JSON_FILE_NAME = "../../ordersData.json";
 const JSON_SYSTEM_FILE = "../../systemData.json";
 
-export const jsonFileOperationsObj = {
+ const jsonFileOperationsObj = {
   readIntegrationJsonFile: async () => {
     try {
       const orders = await fs.readFileSync(
@@ -108,3 +108,4 @@ export const jsonFileOperationsObj = {
     });
   },
 };
+export default jsonFileOperationsObj;

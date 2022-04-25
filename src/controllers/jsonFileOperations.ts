@@ -7,6 +7,12 @@ import { ModifiedOrderObject } from "../interfaces/ModifiedOrderObject";
 const JSON_FILE_NAME = "../../ordersData.json";
 const JSON_SYSTEM_FILE = "../../systemData.json";
 
+type JSONValue = string;
+
+interface JSONObject {
+  [x: string]: JSONValue;
+}
+
 const jsonFileOperationsObj = {
   readIntegrationJsonFile: async () => {
     try {
@@ -104,22 +110,25 @@ const jsonFileOperationsObj = {
     }
   },
   writeCompanySystemJsonFile: async (orders: OrderData) => {
-    let result: any = await jsonFileOperationsObj.readCompanySystemJsonFile();
-    let orderObj = JSON.parse(result);
-    orderObj.push(orders);
-    const ordersJson = JSON.stringify(orderObj);
-    await fs.writeFile(
-      path.resolve(__dirname, JSON_SYSTEM_FILE),
-      ordersJson,
-      "utf8",
-      function (err) {
-        if (err) throw err;
-        else {
-          console.log("file updated");
-          return ordersJson;
+    let result: string | undefined =
+      await jsonFileOperationsObj.readCompanySystemJsonFile();
+    if (result) {
+      let orderObj = JSON.parse(result);
+      orderObj.push(orders);
+      const ordersJson = JSON.stringify(orderObj);
+      await fs.writeFile(
+        path.resolve(__dirname, JSON_SYSTEM_FILE),
+        ordersJson,
+        "utf8",
+        function (err) {
+          if (err) throw err;
+          else {
+            console.log("file updated");
+            return ordersJson;
+          }
         }
-      }
-    );
+      );
+    }
   },
   removeDataFromFile: async () => {
     await fs.truncate(path.resolve(__dirname, JSON_FILE_NAME), 0, function () {

@@ -1,0 +1,42 @@
+To make the system stable both the integration layer and seaber system must be in sync.
+integration layer stores the messages from the external system first and then create the
+order into the seaber system. If seaber system is down the integration layer will keep on 
+accumalating the data and when the seaber system starts running, then data of the integration 
+layer will be synced with seaber system. The main thing is that system is not loosing any data
+during the time seaber system is down.
+
+If the seaber system goes down then integration layer keep on accumalating the data until the
+seaber system starts working.
+
+If external system sends data with alot of unknown types, data can be saved into the object 
+with same extOrderId in the integration layer but order will not be created into the seaber system 
+until it does not have the required type like 'from,to and cargo' according to the document.
+
+As scalabilty is the property of the system to handle the growing amount of the work by adding resources 
+which can be achieved by using either serverless architecture or by using load balancer.
+
+
+The order of the message does not matter, the message will be saved into the integration layer,
+once all the required type of the order are received then order will be created in the seaber
+system.
+
+In the integration layer the duplication of the message also does not matter, if the message is 
+duplicated then it will overwrite in the existing message in the integration layer.
+
+If the message is interleaved with different extOrderID, it will create new record into the integration
+layer but order will not be created into the seaber system unless required types are received.
+
+If the messages from the external system for the same order come at the different time it will be saved
+into the seaber system, because the action of the order can be different e.g first message can be of create
+order type and second message can be of cancel the order.
+
+If the message does not contain any type then the order will not be created into the seaber system, according
+to the doucment the order can only be created if messages of all three required types are received.
+
+Converting of XML data type into JSON type will not majorily effect the code, because a function can be added
+into a code which will check the type of data, if data type is XML it will be converted into JSON and then
+return the JSON.
+
+
+
+

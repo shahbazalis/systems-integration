@@ -7,11 +7,6 @@ import { ModifiedOrderObject } from "../interfaces/ModifiedOrderObject";
 const JSON_FILE_NAME = "../../ordersData.json";
 const JSON_SYSTEM_FILE = "../../systemData.json";
 
-type JSONValue = string;
-
-interface JSONObject {
-  [x: string]: JSONValue;
-}
 
 const jsonFileOperationsObj = {
   readIntegrationJsonFile: async () => {
